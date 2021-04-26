@@ -1,0 +1,181 @@
+﻿@model Dictionary<List<Event>, int>
+
+<html lang="fr-fr">
+<head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <link href="../css/form.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Sites">Sites</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="text-center">
+        <button style="margin:5px;" id="Prise de Service" type="button" class="btn btn-primary">Prise de Service </button>
+        <button style="margin:5px;" id="RAS" type="button" class="btn btn-primary">RAS</button>
+        <button style="margin:5px;" id="Fin de Service" type="button" class="btn btn-primary">Fin de Service</button>
+        <br />
+        <br />
+
+        <form>
+
+            <select id="selectoin" class="custom-select">
+                <option value="0" selected>sélectionner un evenement</option>
+                <option value="Ronde RAS">Ronde RAS</option>
+                <option value="Ronde generale du site RAS">Ronde generale du site RAS  </option>
+                <option value="Toujours en place"> Toujours en place</option>
+                <option value="1">Autre</option>
+            </select>
+            <br />
+            <br />
+            <button id="btn_add" type="button" class="btn btn-primary">Ajouter un  evenement</button>
+        </form>
+        <div id="form" style="display: none;">
+            @using (Html.BeginForm("AddNew", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Model.Values.First()
+                <input type="hidden" value="@Model.Values.First()" name="data" />
+                <ul class="form-style-1">
+                    <li>
+                        <label>Titre <span class="required">*</span></label>
+                        <input type="text" name="titre" class="field-long" />
+                    </li>
+                    <li>
+                        <label>Description <span class="required">*</span></label>
+                        <textarea name="desc" id="field5" class="field-long field-textarea"></textarea>
+                    </li>
+                    <li>
+                        <label for="img">Ajouter une image</label>
+                        <input type="file" id="img" name="file" accept="image/*">
+                    </li>
+                    <li>
+                        <input type="submit" value="Submit" />
+                    </li>
+                </ul>
+            }
+        </div>
+        <br />
+        <br />
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Titre</th>
+
+                    <th scope="col">detail </th>
+                </tr>
+            </thead>
+
+            @foreach (var ev in Model.Keys.First())
+            {
+                <tbody>
+                    <tr>
+
+                        <td>@ev.date</td>
+                        <td>@ev.title</td>
+
+                        <td>
+                            @using (Html.BeginForm("Detail", "Home", FormMethod.Post))
+                            {
+                                <input type="hidden" value="@ev.title" name="title" />
+                                <input type="hidden" value="@ev.description" name="desc" />
+                                <input type="hidden" value="@ev.image" name="image" />
+                                <input type="hidden" value="@ev.date" name="date" />
+
+
+
+                                <!-- form here -->
+                                <button type="submit" class="btn btn-info">Détails</button>
+
+                            }
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            }
+
+        </table>
+
+
+    </div>
+    <br />
+    <br />
+    <br />
+</body>
+
+</html>
+
+<script src="https://ajax.microsoft.com/ajax/jquery/jquery-1.10.2.js" type="text/javascript"></script>
+
+<script>
+    $(".btn-primary").on('click', function (e) {
+        //document.getElementById('re').innerHTML = $(".btn-info").attr('id');
+        //alert($('#selectoin').val());
+        if ($(this).attr('id') == "btn_add") {
+
+            if ($('#selectoin').val() == 0) {
+
+            }
+            if ($('#selectoin').val() == 1) {
+                $("#form").css("display", "block");
+            }
+            else {
+                var request = $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Add", "Home")',
+
+                    data: {
+                        titre: $('#selectoin').val(),
+                        data:@Model.Values.First(),
+                    },
+
+                    success: function () {
+                        window.location.reload();
+
+                    }
+                })
+            }
+        }
+        else {
+            var request = $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Add", "Home")',
+
+                    data: {
+                        titre: this.id,
+                        data:@Model.Values.First(),
+
+                    },
+
+                    success: function () {
+                        window.location.reload();
+
+                    }
+                })
+        }
+    });
+    
+</script>
